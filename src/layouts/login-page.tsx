@@ -1,13 +1,13 @@
 import axios from "axios";
 import React from "react";
 import {enqueueSnackbar} from "notistack";
-import {Navigate} from "react-router-dom";
+import {Navigate, useNavigate} from "react-router-dom";
 import PatternStyleLoginPage from "../components/pattern-style-login-page";
 
 type PropsErrors = Record<string, string | number | boolean>;
 function LoginPage() {
   const access_token = window.localStorage.getItem("access_token");
-
+  const navigate = useNavigate();
   const [errors, setErrors] = React.useState<PropsErrors>({});
   const [isLoading, startTransition] = React.useTransition();
   const [values, setValues] = React.useState<{
@@ -32,11 +32,17 @@ function LoginPage() {
     startTransition(async () => {
       try {
         const data = await axios.post(
-          import.meta.env.SUPERSPRING_APP_URL,
+          `${import.meta.env.SUPERSPRING_APP_URL}/login`,
           values
         );
-        const {username} = data?.data?.message?.data || {};
-        console.log(username);
+        const {username, token, fullname, email, phone} =
+          data?.data?.message?.data || {};
+        window.localStorage.setItem("username", username);
+        window.localStorage.setItem("access_token", token);
+        window.localStorage.setItem("fullname", fullname);
+        window.localStorage.setItem("email", email);
+        window.localStorage.setItem("phone", phone);
+        navigate("/");
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.log(error);

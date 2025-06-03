@@ -5,6 +5,7 @@ import JobPage from "./layouts/job-page";
 import VehicleListPage from "./layouts/vehicle-list-page";
 import LoginPage from "./layouts/login-page";
 import NotFoundPage from "./layouts/not-found-page";
+import SettingPage from "./layouts/setting-page";
 
 function Routes() {
   return useRoutes([
@@ -23,6 +24,10 @@ function Routes() {
         {
           element: <VehicleListPage />,
           path: "/vehicle-list",
+        },
+        {
+          element: <SettingPage />,
+          path: "/setting",
         },
       ],
     },
