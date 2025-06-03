@@ -1,5 +1,3 @@
-import * as React from "react";
-
 const EngineIcon = ({color = "#28C76F"}: {color?: string}) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"

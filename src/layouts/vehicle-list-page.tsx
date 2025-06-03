@@ -33,9 +33,11 @@ export type DataProps = {
 
 function VehicleListPage() {
   const [data, setData] = useState<DataProps[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const access_token = window.localStorage.getItem("access_token");
         const data = await axios.get(
           `${import.meta.env.SUPERSPRING_APP_URL}/vehicle`,
@@ -48,16 +50,38 @@ function VehicleListPage() {
         setData(data?.data?.message?.data || []);
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchData();
   }, []);
   return (
     <div>
-      <div className="grid xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data?.map((item, index) => (
-          <CardVehicleItem item={item} key={index} />
-        ))}
+      <div className=" relative grid xs:grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {isLoading ? (
+          Array(6)
+            .fill(1)
+            .map((_, index) => (
+              <div
+                key={index}
+                className="w-full h-[177px] rounded-lg bg-slate-400 animate-pulse"
+              />
+            ))
+        ) : data.length !== 0 ? (
+          data?.map((item, index) => (
+            <CardVehicleItem item={item} key={index} />
+          ))
+        ) : (
+          <div className="w-full absolute top-30 flex justify-center items-center">
+            <div className="flex justify-center flex-col items-center">
+              <p className="text-2xl font-black text-slate-500">
+                Ups! Empty !!
+              </p>
+              <p className="text-slate-500">Cannot find any data</p>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
