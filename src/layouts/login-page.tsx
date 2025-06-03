@@ -32,7 +32,7 @@ function LoginPage() {
     startTransition(async () => {
       try {
         const data = await axios.post(
-          "https://dev-portal.gps.id/backend/seen/public/login",
+          import.meta.env.SUPERSPRING_APP_URL,
           values
         );
         const {username} = data?.data?.message?.data || {};
