@@ -168,7 +168,12 @@ function DashboardDrawer() {
         </div>
         <div className="w-full">
           <Header />
-          <div className=" bg-slate-200 min-h-dvh p-6">
+          <div
+            style={{
+              height: "calc(100dvh - 70px)",
+            }}
+            className=" bg-slate-200 p-6 overflow-auto"
+          >
             <Outlet />
           </div>
         </div>
